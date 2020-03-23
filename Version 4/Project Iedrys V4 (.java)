@@ -1,0 +1,658 @@
+/*-----------------------------------------------------------------------*/
+/* 						Project Iedrys Version 4						 */
+/* Find the newest version in https://github.com/Miraneel/Project-Iedrys */
+/*-----------------------------------------------------------------------*/
+
+//Christopher Gabriel Pedraza Pohlenz
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.Random;
+
+public class Tools {
+
+	//ATRIBUTOS
+	private static FileWriter fw = null;
+	private static PrintWriter pw = null;
+	private static File file = null;
+	private static FileReader fr = null;
+	private static BufferedReader br = null;
+	private static String row;
+	
+	
+	//SET DIRECTION
+	public void setDirectionWrite(String pDirection, Boolean pRewrite) throws IOException {
+		fw = new FileWriter(pDirection, pRewrite);
+	}
+
+	public void setDirectionRead(String pDirection) throws IOException {
+		file = new File(pDirection);
+	}
+	
+	
+	
+	//READ AND WRITE
+	public String read() throws IOException{
+		row = br.readLine();
+		return row;
+	}
+	
+	public void write(String pText) throws IOException {
+		pw.println(pText);
+	}
+	
+	
+	
+	//INSTANCES
+	public void instanceWrite() {
+		pw = new PrintWriter(fw);
+	}
+	
+	public void instanceRead() throws IOException {
+		fr = new FileReader(file);
+		br = new BufferedReader(fr);	
+	}
+
+	
+	
+	//CLOSE
+	public void closeWrite() throws IOException {
+		fw.close();
+	}
+	
+	public void closeRead() throws IOException {
+		fr.close();
+	}
+	
+	
+	
+	//COUNT
+	public int count(String pDirection) throws IOException {
+		fw = new FileWriter(pDirection, true);
+		fw.close();
+		
+		file = new File(pDirection);
+		fr = new FileReader(file);
+		br = new BufferedReader(fr);
+		
+		String temporal = "";
+		
+		int counter = -1;
+
+		while (temporal != null) {
+			temporal = br.readLine();
+			counter++;
+		}
+		
+		fr.close();
+		return counter;
+	}
+	
+	
+	
+	//LIST WITH COUNTER
+	public void listWithCounter(String pDirection) throws IOException {
+		fw = new FileWriter(pDirection, true);
+		fw.close();
+		
+		file = new File(pDirection);
+		fr = new FileReader(file);
+		br = new BufferedReader(fr);
+		
+		int counter = 0;
+		String temporal = "";
+		
+		while (temporal != null) {
+			temporal = br.readLine();
+			counter++;
+			if (temporal != null) {
+				System.out.println(counter + ". " + temporal);
+			}
+		}
+		
+		fr.close();
+	}
+	
+	
+	
+	//LIST
+	public void list(String pDirection) throws IOException {
+		fw = new FileWriter(pDirection, true);
+		fw.close();
+		
+		file = new File(pDirection);
+		fr = new FileReader(file);
+		br = new BufferedReader(fr);
+
+		String temporal = "";
+		
+		while (temporal != null) {
+			temporal = br.readLine();
+			if (temporal != null) {
+				System.out.println(temporal);
+			}
+		}
+		
+		fr.close();
+	}
+	
+	
+	
+	//ADD
+	public void add(String pDirection, boolean pRewrite, String pText) throws IOException {
+		fw = new FileWriter(pDirection, pRewrite);
+		pw = new PrintWriter(fw);
+		pw.println(pText);
+		fw.close();	
+	}
+	
+	
+	
+	//REMOVE
+	public void remove(String pDirection, int pIndex) throws IOException {
+		int tempNum = pIndex - 1;
+		String temporal = "";
+		
+		fw = new FileWriter(pDirection, true);
+		fw.close();
+		
+		int amount = count(pDirection);
+		String array[] = new String [amount];
+		
+		file = new File(pDirection);
+		fr = new FileReader(file);
+		br = new BufferedReader(fr);
+		
+		for (int i = 0; i < array.length; i++) {
+			array[i] = br.readLine();
+		}
+		
+		fr.close();
+		
+		fw = new FileWriter(pDirection, false);
+		pw = new PrintWriter(fw);
+		
+		for (int i = 0; i < amount; i++) {
+			if (i != tempNum) {
+				temporal = array[i];
+				pw.println(temporal);
+			}
+		}
+		
+		fw.close();	
+	}
+	
+	
+	
+	//MODIFY
+	public void modify(String pDirection, int pIndex, String pText) throws IOException {
+		int tempNum = pIndex - 1;
+		String temporal = "";
+		
+		fw = new FileWriter(pDirection, true);
+		fw.close();
+		
+		int amount = count(pDirection);
+		String array[] = new String [amount];
+		
+		file = new File(pDirection);
+		fr = new FileReader(file);
+		br = new BufferedReader(fr);
+		
+		for (int i = 0; i < array.length; i++) {
+			array[i] = br.readLine();
+		}
+		
+		fr.close();
+		
+		fw = new FileWriter(pDirection, false);
+		pw = new PrintWriter(fw);
+		
+		for (int i = 0; i < amount; i++) {
+			if (i != tempNum) {
+				temporal = array[i];
+				pw.println(temporal);
+			}
+			else {
+				pw.println(pText);
+			}
+		}
+		
+		fw.close();	
+	}
+	
+	
+	
+	//FILE TO ARRAY
+	public String[] fileToArray(String pDirection) throws IOException {
+		int amount = count(pDirection);
+		amount--;
+		
+		String array[] = new String[amount];
+		
+		file = new File(pDirection);
+		fr = new FileReader(file);
+		br = new BufferedReader(fr);
+		
+		for (int i = 0; i < array.length; i++) {
+			array[i] = br.readLine();
+		}
+		
+		fr.close();
+				
+		return array;
+	}
+	
+	
+	
+	//FILE EXISTS
+	public boolean fileExists(String pDirection) {
+		File tempFile = new File(pDirection);
+		boolean exists = tempFile.exists();
+		return exists;
+	}
+	
+	
+	
+	//IS AN INTEGER
+	public boolean isInteger(String str) {
+		try {
+			Integer.parseInt(str);
+			return true;
+		} catch(NumberFormatException e){
+			return false;
+		}
+	}
+	
+	
+	
+	//IS A DOUBLE
+	public boolean isDouble(String str) {
+		try {
+			Double.parseDouble(str);
+			return true;
+		} catch(NumberFormatException e){
+			return false;
+		}
+	}
+	
+	
+	
+	//REMOVE STRING ARRAY
+	public String[] removeArray(String[] pArray, int pIndex) {
+		String[] tempArray = null;
+
+		if (pArray != null) {
+			tempArray = new String[pArray.length-1];
+
+			int g = 0;
+			for (int i = 0; i < pArray.length; i++) {
+				if (i != pIndex) {
+					tempArray[g] = pArray[i];
+					g++;
+				}
+			}
+		}
+		return tempArray;
+	}
+	
+	
+	
+	//REMOVE INTEGER ARRAY
+	public Integer[] removeArray(Integer[] pArray, int pIndex) {
+		Integer[] tempArray = null;
+
+		if (pArray != null) {
+			tempArray = new Integer[pArray.length-1];
+
+			int g = 0;
+			for (int i = 0; i < pArray.length; i++) {
+				if (i != pIndex) {
+					tempArray[g] = pArray[i];
+					g++;
+				}
+			}
+		}
+		return tempArray;
+	}
+	
+	
+	
+	//REMOVE DOUBLE ARRAY
+	public Double[] removeArray(Double[] pArray, int pIndex) {
+		Double[] tempArray = null;
+		
+		if (pArray != null) {
+			tempArray =	new Double[pArray.length-1];
+
+			int g = 0;
+			for (int i = 0; i < pArray.length; i++) {
+				if (i != pIndex) {
+					tempArray[g] = pArray[i];
+					g++;
+				}
+			}
+		}
+		return tempArray;
+	}
+	
+	
+	
+	//MODIFY STRING ARRAY
+	public String[] modifyArray(String[] pArray, int pIndex, String pModification) {
+		String[] tempArray = null;
+
+		if (pArray != null) {	
+			tempArray = new String[pArray.length];
+
+			for (int i = 0; i < pArray.length; i++) {
+				if (i != pIndex) {
+					tempArray[i] = pArray[i];
+				}
+				else {
+					tempArray[i] = pModification;
+				}
+			}
+		}
+		return tempArray;
+	}
+	
+	
+	
+	//MODIFY INTEGER ARRAY
+	public Integer[] modifyArray(Integer[] pArray, int pIndex, int pModification) {
+		Integer[] tempArray = null;
+				
+		if (pArray != null) {	
+			tempArray = new Integer[pArray.length];
+
+			for (int i = 0; i < pArray.length; i++) {
+				if (i != pIndex) {
+					tempArray[i] = pArray[i];
+				}
+				else {
+					tempArray[i] = pModification;
+				}
+			}
+		}
+		return tempArray;
+	}
+	
+	
+	
+	//MODIFY DOUBLE ARRAY
+	public Double[] modifyArray(Double[] pArray, int pIndex, double pModification) {
+		Double[] tempArray = null;
+		
+		if (pArray != null) {
+			tempArray = new Double[pArray.length];
+
+			for (int i = 0; i < pArray.length; i++) {
+				if (i != pIndex) {
+					tempArray[i] = pArray[i];
+				}
+				else {
+					tempArray[i] = pModification;
+				}
+			}
+		}
+		return tempArray;
+	}
+	
+	
+	
+	//ADD STRING ARRAY
+	public String[] addToArray(String[] pArray, String pData) {
+		
+		if (pArray == null) {	
+			String tempArray[] = new String[1];
+			tempArray[0] = pData;
+			pArray = tempArray;
+		}
+		
+		else {
+			String tempArray[] = new String[pArray.length+1];
+			
+			for (int i = 0; i < pArray.length; i++) {
+				tempArray[i] = pArray[i];
+			}
+			
+			tempArray[pArray.length] = pData;
+			pArray = tempArray;
+		}
+		return pArray;
+	}
+	
+	
+	
+	//ADD INTEGER ARRAY
+	public Integer[] addToArray(Integer[] pArray, int pData) {
+		
+		if (pArray == null) {	
+			Integer tempArray[] = new Integer[1];
+			tempArray[0] = pData;
+			pArray = tempArray;
+		}
+		
+		else {
+			Integer tempArray[] = new Integer[pArray.length+1];
+			
+			for (int i = 0; i < pArray.length; i++) {
+				tempArray[i] = pArray[i];
+			}
+			
+			tempArray[pArray.length] = pData;
+			pArray = tempArray;
+		}
+		return pArray;
+	}
+	
+	
+	
+	//ADD DOUBLE ARRAY
+	public Double[] addToArray(Double[] pArray, double pData) {
+		
+		if (pArray == null) {	
+			Double tempArray[] = new Double[1];
+			tempArray[0] = pData;
+			pArray = tempArray;
+		}
+		
+		else {
+			Double tempArray[] = new Double[pArray.length+1];
+			
+			for (int i = 0; i < pArray.length; i++) {
+				tempArray[i] = pArray[i];
+			}
+			
+			tempArray[pArray.length] = pData;
+			pArray = tempArray;
+		}
+		return pArray;
+	}
+	
+	
+	
+	//COUNT STRING ARRAY
+	public int countArray(String[] pArray) {
+		int counter = 0;
+		if (pArray != null) {
+			counter = pArray.length;
+		}
+		return counter;
+	}
+	
+	
+	
+	//COUNT INTEGER ARRAY
+	public int countArray(Integer[] pArray) {
+		int counter = 0;
+		if (pArray != null) {
+			counter = pArray.length;
+		}
+		return counter;
+	}
+	
+	
+	
+	//COUNT DOUBLE ARRAY
+	public int countArray(Double[] pArray) {
+		int counter = 0;
+		if (pArray != null) {
+			counter = pArray.length;
+		}
+		return counter;
+	}
+	
+	
+	
+	//STRING TOKENIZER TO ARRAY
+	public String[][] stringTokenizerToArray(String pDirection, String pDivider) throws IOException {
+		String[][] tempArray = null;
+		boolean exists = fileExists(pDirection);
+		String row, data;
+		int columns = 0;
+		
+		if (exists) {
+			setDirectionRead(pDirection);
+			instanceRead();
+			row = read();
+			
+			if (row != null) {
+				StringTokenizer parts = new StringTokenizer(row, pDivider);
+				while (parts.hasMoreElements()) {
+					parts.nextToken();
+					columns++;
+				}
+			}
+			
+			int rows = count(pDirection);
+			int counterRow = 0;
+			int counterColumn = 0;
+
+			closeRead();
+			setDirectionRead(pDirection);
+			instanceRead();
+			row = read();
+			
+			tempArray = new String[rows][columns];
+
+			while (row != null) {
+
+				StringTokenizer parts = new StringTokenizer(row, pDivider);
+
+				while (parts.hasMoreElements()) {
+					data = parts.nextToken();
+
+					tempArray[counterRow][counterColumn] = data;
+
+					counterColumn++;
+				}
+				counterRow++;
+				counterColumn = 0;
+
+				row = read();
+
+			}
+			closeRead();
+			
+		}
+		
+		return tempArray;
+	}
+	
+	
+	
+	//CHARACTER POSITION
+	public Integer[] charPosition(String pText, String pChar) {
+		Integer[] positions = null;
+		
+		if (pText.contains(pChar)) {
+			int index = pText.indexOf(pChar);
+			int matchLength = pChar.length();
+			while (index >= 0) {  
+				positions = addToArray(positions, index);
+			    index = pText.indexOf(pChar, index + matchLength);
+			}
+		}
+		
+		return positions;
+	}
+	
+	
+	
+	//LIST STRING ARRAY
+	public void listArray(String[] pArray) {
+		for (int i = 0; i < pArray.length; i++) {
+			System.out.println(pArray[i]);
+		}
+	}
+	
+	
+	
+	//LIST INTEGER ARRAY
+	public void listArray(Integer[] pArray) {
+		for (int i = 0; i < pArray.length; i++) {
+			System.out.println(pArray[i]);
+		}
+	}
+	
+	
+	
+	//LIST DOUBLE ARRAY
+	public void listArray(Double[] pArray) {
+		for (int i = 0; i < pArray.length; i++) {
+			System.out.println(pArray[i]);
+		}
+	}
+	
+	
+	
+	//LIST STRING ARRAY WITH COUNTER
+	public void listArrayCounter(String[] pArray) {
+		int g = 1;
+		for (int i = 0; i < pArray.length; i++) {
+			System.out.println(g + ". " + pArray[i]);
+			g++;
+		}
+	}
+	
+	
+	
+	//LIST INTEGER ARRAY WITH COUNTER
+	public void listArrayCounter(Integer[] pArray) {
+		int g = 1;
+		for (int i = 0; i < pArray.length; i++) {
+			System.out.println(g + ". " + pArray[i]);
+			g++;
+		}
+	}
+	
+	
+	
+	//LIST DOUBLE ARRAY WITH COUNTER
+	public void listArrayCounter(Double[] pArray) {
+		int g = 1;
+		for (int i = 0; i < pArray.length; i++) {
+			System.out.println(g + ". " + pArray[i]);
+			g++;
+		}
+	}
+	
+	
+	
+	//RANDOM NUMBER
+	public int randomNumber(int pMin, int pMax) {
+		Random random = new Random();
+		int randomNumber = random.nextInt(pMax + 1 - pMin) + pMin;
+		
+		return randomNumber;
+	}
+}
+
+//Christopher Pedraza Pohlenz A01177767
