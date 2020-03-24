@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class Tools {
 
-	//ATRIBUTOS
+	//VARIABLES
 	private static FileWriter fw = null;
 	private static PrintWriter pw = null;
 	private static File file = null;
